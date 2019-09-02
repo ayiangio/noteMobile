@@ -4,9 +4,11 @@ import {
     View,
     Text,
     TouchableOpacity,
-    Image
+    Image, TextInput,
+    Picker
 } from 'react-native';
 import { connect } from 'react-redux';
+import { addNote } from '../../Publics/Redux/action/note'
 import { withNavigation } from 'react-navigation';
 class Add extends Component {
     constructor(props) {
@@ -18,7 +20,22 @@ class Add extends Component {
         };
 
     }
+    add = () => {
+        const data={
+            idCat : this.state.category,
+            desc : this.state.desc,
+            title : this.state.title,
+        }
+        // console.log(data);
+         this.props.dispatch(addNote(data))
+            .then(() => {
+                this.props.navigation.push('home');
+                console.log('berhasil')
+            })
+    }
     render() {
+
+
         return (
             <View style={style.body} >
                 <View style={style.navbar}>
@@ -30,26 +47,59 @@ class Add extends Component {
                     </TouchableOpacity>
                     <Text style={{ marginHorizontal: '40%', fontSize: 16, fontWeight: "bold" }}>Add Note</Text>
                     <TouchableOpacity style={style.scornavbar}
-                        onPress={() => this.props.navigation.navigate('board', {
-                            idUser: this.state.id,
-                        })}
+                        onPress={this.add}
                     >
                         <Image
-                            style={{ width: 32, height: 32 }}
+                            style={{ width: 32, height: 32, borderRadius: 20 }}
                             source={require('../../img/true.jpg')}
                         />
                     </TouchableOpacity>
                 </View>
+                <View style={{ position: 'absolute', marginTop: '30%' }}>
+                    <TextInput style={{ width: 200 }}
+                        placeholder="Title"
+                        placeholderTextColor="black"
+                        multiline={true}
+                        keyboardType="email-address"
+                        onChangeText={(title) => this.setState({ title })}
+                    />
+                    <TextInput style={{ width: 400, height: 100 }}
+                        placeholder="Desc"
+                        placeholderTextColor="black"
+                        multiline={true}
+                        numberOfLines={2}
+                        keyboardType="email-address"
+                        onChangeText={(desc) => this.setState({ desc })}
+                    />
+                    
+                    <Picker
+                        selectedValue={this.state.catgeory}
+                        style={{ height: 50, width: 100, marginLeft: '10%' }}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.setState({ category: itemValue })
+                        }>
+                            {/* <Text>Category</Text> */}
+                        {this.props.notes.map((item) => {
+                            return (
+                                <Picker.Item label={item.category} value={item.idCat} />
+                            )
+                        })}
+
+                    </Picker>
+                </View>
+
             </View>
         )
     }
 }
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
     return {
-        note: state.note.noteList
-    };
-};
+        notes: state.note.catList
+    }
+}
 export default connect(mapStateToProps)(withNavigation(Add));
+
+
 const style = StyleSheet.create({
     body: {
         flex: 1,

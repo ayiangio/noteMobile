@@ -14,45 +14,51 @@ class Card extends Component {
             refresh: false,
             page: 0,
             isLoading: false,
-            color :['#2FC2DF', '#C0EB6A', '#FAD06C', '#FF92A9'],
-            tes:[]
+            color: ['#2FC2DF', '#C0EB6A', '#FAD06C', '#FF92A9'],
+            tes: []
         };
     };
-    componentDidMount = async () => {
+    componentWillMount = async () => {
         console.log(this.props.notes)
         await this.props.dispatch(getNote());
         this.setState({
-            tes: this.props.notes,
+            data: this.props.notes,
         });
     }
-    _keyExtractor = (item, index) => item.idNote + ''
-    FlatListItem = (item, key) => (
-
-        <TouchableOpacity onPress={() => this.props.navigation.navigate('editNotes', item)} style={{
-            elevation: 5,
-            width: 136,
-            height: 138,
-            paddingHorizontal: 20,
-            margin: 14,
-            flex: 1,
-            borderRadius: 5,
-            backgroundColor: item.item.idCat == 1 ? '#2FC2DF' :
-                    item.item.idCat == 2 ? '#C0EB6A' :
+    _keyExtractor = (item, index) => item.idCat + ''
+    FlatListItem = (item, index) => (
+        <TouchableOpacity onPress={() => this.props.navigation.navigate('edit', {
+            id: item.item.idNote,
+            idCat: item.item.idCat, 
+            desc: item.item.desc,
+            title: item.item.title
+        })}
+            style={{
+                elevation: 5,
+                width: 136,
+                height: 138,
+                paddingHorizontal: 20,
+                margin: 14,
+                flex: 1,
+                borderRadius: 5,
+                backgroundColor: item.item.idCat == 1 ? '#FF92A9' :
+                    item.item.idCat == 2 ? '#DCDB6A' :
                         item.item.idCat == 3 ? '#FAD06C' :
-                            item.item.idCat == 4 ? '#FF92A9' : '#2F4356'
+                            item.item.idCat == 4 ? '#22EFA9' : '#2F4356'
 
-        }} onLongPress={() => this.confirmation(item.item.id)}>
+            }}>
             {/* {console.log(item)} */}
             <View>
-                <Text style={styles.date}>{moment(item.item.notes_time).format('D MMM')}</Text>
+                <Text style={styles.date}>{moment(item.item.date).format('D MMM')}</Text>
                 <Text style={styles.title}>{item.item.title}</Text>
                 {
-                    item.item.name_category == null ?
+                    item.item.category == null ?
                         <Text>category notfound </Text> :
-                        <Text style={styles.category}>{item.item.name_category}</Text>
+                        <Text style={styles.category}>{item.item.category}</Text>
                 }
-                <Text numberOfLines={4} style={styles.content}>{item.item.notes_note}</Text>
+                <Text numberOfLines={4} style={styles.content}>{item.item.desc}</Text>
             </View>
+            <Text>{index}</Text>
         </TouchableOpacity>
     )
 
@@ -60,6 +66,7 @@ class Card extends Component {
         // if (this.state.data.length % 2 == 1) {
         //     this.state.data.push('')
         // }
+        console.log('isis', this.state.data)
         return (
             <View style={{ height: '109%' }}>
                 <View style={{
@@ -68,7 +75,7 @@ class Card extends Component {
                     <TextInput style={{ borderColor: "black", borderWidth: 1, paddingLeft: 20, marginHorizontal: "10%", borderRadius: 50 }} selectionColor={'#7eeddf'} placeholder={'Search ..'} />
                 </View>
                 <FlatList
-                    data={this.state.data}
+                    data={this.props.notes}
                     numColumns={2}
                     // keyExtractor={this._keyExtractor}
                     renderItem={this.FlatListItem}

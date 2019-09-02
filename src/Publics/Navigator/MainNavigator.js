@@ -3,6 +3,7 @@ import { createAppContainer, createMaterialTopTabNavigator, createStackNavigator
 import Drawer from '../../Components/drawer'
 import Home from '../../Screen/home/main'
 import Add from '../../Screen/home/addNote'
+import Edit from '../../Screen/home/editNote'
 const AppNavigator = createStackNavigator({
     home: {
         screen: Home,
@@ -11,6 +12,11 @@ const AppNavigator = createStackNavigator({
         }
     },add: {
         screen: Add,
+        navigationOptions: {
+            header: null
+        }
+    },edit: {
+        screen: Edit,
         navigationOptions: {
             header: null
         }
