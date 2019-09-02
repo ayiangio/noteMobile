@@ -43,11 +43,6 @@
     <img width="250" src="./src/img/2.jpeg">
     <img width="250" src="./src/img/3.jpeg">
     <img width="250" src="./src/img/4.jpeg">
-    <img width="250" src="./src/img/5.jpeg">
-    <img width="250" src="./src/img/6.jpeg">
-    <img width="250" src="./src/img/7.jpeg">
-    <img width="250" src="./src/img/8.jpeg">
-    <img width="250" src="./src/img/9.jpeg">
 </div>
 
 ## Related Project (Backend)
