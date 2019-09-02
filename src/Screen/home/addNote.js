@@ -55,7 +55,7 @@ class Add extends Component {
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={{ position: 'absolute', marginTop: '30%' }}>
+                <View style={{ position: 'absolute', marginTop: '30%', marginLeft:'10%' }}>
                     <TextInput style={{ width: 200 }}
                         placeholder="Title"
                         placeholderTextColor="black"
@@ -63,7 +63,7 @@ class Add extends Component {
                         keyboardType="email-address"
                         onChangeText={(title) => this.setState({ title })}
                     />
-                    <TextInput style={{ width: 400, height: 100 }}
+                    <TextInput style={{ width: 400, height: 300 }}
                         placeholder="Desc"
                         placeholderTextColor="black"
                         multiline={true}
@@ -71,10 +71,10 @@ class Add extends Component {
                         keyboardType="email-address"
                         onChangeText={(desc) => this.setState({ desc })}
                     />
-                    
+                    <Text>Category</Text>
                     <Picker
                         selectedValue={this.state.catgeory}
-                        style={{ height: 50, width: 100, marginLeft: '10%' }}
+                        style={{ height: 50, width: 100, }}
                         onValueChange={(itemValue, itemIndex) =>
                             this.setState({ category: itemValue })
                         }>

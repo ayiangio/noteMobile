@@ -3,9 +3,10 @@ import React, { Component } from 'react'
 import { Alert, TouchableHighlight, View, StyleSheet, ScrollView, Image, Text, TextInput, TouchableOpacity, FlatList, Button } from 'react-native'
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
-import Data from './catdum'
 import { getCatNote } from '../Publics/Redux/action/note'
+import { addCat } from '../Publics/Redux/action/note'
 import Modal from "react-native-modal";
+import ImagePicker from 'react-native-image-picker'
 class Drawer extends Component {
     constructor(props) {
         super(props)
@@ -14,6 +15,7 @@ class Drawer extends Component {
             name: '',
             image: '',
             data: [],
+            path: ''
         }
     }
     setModalVisible(visible) {
@@ -25,6 +27,30 @@ class Drawer extends Component {
         this.setState({
             data: this.props.notes,
         });
+    }
+    chooseFile = () => {
+        const options = {
+            noData: true
+        }
+        ImagePicker.showImagePicker(options, response => {
+            console.warn("response", response.uri);
+            if (response.uri) {
+                this.setState({ path: response })
+            }
+        })
+    }
+    add = () => {
+        dataFile = new FormData(),
+            dataFile.append('image',
+                {
+                    uri: this.state.path.uri,
+                    type: 'image/jpg',
+                    name: 'terserah'
+                }
+            ),
+            dataFile.append('category', this.state.category),
+            this.props.dispatch(addCat(dataFile))
+                .then(() => { this.props.navigation.push('home') })
     }
     render() {
         console.log(this.props.notes);
@@ -57,24 +83,25 @@ class Drawer extends Component {
                     </TouchableOpacity>
                     <Modal isVisible={this.state.modalVisible} >
                         <View style={{ flex: 1, justifyContent: 'center' }}>
+
+                            <TouchableOpacity
+                                style={styles.inputBox}
+                                onPress={this.chooseFile.bind(this)}>
+                                <Text style={{ color: 'black', height: 50, marginTop: 10, marginBottom: -20 }}>Choose Photo </Text>
+                            </TouchableOpacity>
                             <TextInput style={styles.inputBox}
-                                placeholder="Image"
+                                placeholder="Category"
                                 placeholderTextColor="black"
                                 keyboardType="email-address"
                                 onSubmitEditing={() => this.password.focus()}
-                                onChangeText={(email) => this.setState({ email })}
+                                onChangeText={(category) => this.setState({ category })}
                             />
-                            <TextInput style={styles.inputBox}
-                                placeholder="Category"
-                                secureTextEntry={true}
-                                placeholderTextColor="black"
-                                onChangeText={(password) => this.setState({ password })}
-                            />
-                            <TouchableOpacity style={styles.button} >
+
+                            <TouchableOpacity style={styles.button} onPress={this.add} >
                                 <Text style={styles.buttonText}>Add</Text>
                             </TouchableOpacity>
-                            <TouchableOpacity style={styles.button} onPress={()=>{
-                                 this.setModalVisible(false);
+                            <TouchableOpacity style={styles.button} onPress={() => {
+                                this.setModalVisible(false);
                             }}>
                                 <Text style={styles.buttonText}>Cancel</Text>
                             </TouchableOpacity>

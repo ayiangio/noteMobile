@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native';
-
 import { Button, Icon, Fab } from 'native-base';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';

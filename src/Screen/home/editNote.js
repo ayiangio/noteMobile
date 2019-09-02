@@ -10,30 +10,47 @@ import {
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import { getCatNote } from '../../Publics/Redux/action/note'
+import { editNote } from '../../Publics/Redux/action/note'
 
 // import console = require('console');
 class Edit extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            idCat : this.props.navigation.getParam('idCat'),
-            idNote : this.props.navigation.getParam('id'),
-            title : this.props.navigation.getParam('title'),
-            desc : this.props.navigation.getParam('desc'),
-            cat :[]
+            idCat: this.props.navigation.getParam('idCat'),
+            idNote: this.props.navigation.getParam('id'),
+            title: this.props.navigation.getParam('title'),
+            desc: this.props.navigation.getParam('desc'),
+            cat: [],
+            category: null
 
         };
 
-    }    
+    }
     componentWillMount = async () => {
         console.log(this.props.notes)
         await this.props.dispatch(getCatNote());
         this.setState({
-            cat: this.props.notes,
+            cat: this.props.note,
         });
     }
+
+    edit = () => {
+        const data = {
+            idCat: this.state.idCat,
+            desc: this.state.desc,
+            title: this.state.title,
+        }
+        this.props.dispatch(editNote(data, Number(this.state.idNote)))
+            .then(() => {
+                this.props.navigation.push('home');
+                console.log('berhasil')
+            })
+    }
     render() {
-        console.log(this.state.data)
+        console.log(this.props.note)
+        console.log('id', this.state.idNote);
+
         return (
             <View style={style.body} >
                 <View style={style.navbar}>
@@ -45,9 +62,7 @@ class Edit extends Component {
                     </TouchableOpacity>
                     <Text style={{ marginHorizontal: '40%', fontSize: 16, fontWeight: "bold" }}>Edit Note</Text>
                     <TouchableOpacity style={style.scornavbar}
-                        onPress={() => this.props.navigation.navigate('board', {
-                            idUser: this.state.id,
-                        })}
+                        onPress={this.edit}
                     >
                         <Image
                             style={{ width: 32, height: 32, borderRadius: 20 }}
@@ -55,16 +70,16 @@ class Edit extends Component {
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={{ position: 'absolute', marginTop: '30%' }}>
-                <TextInput style={{ width: 200 }}
+                <View style={{ position: 'absolute', marginTop: '30%', marginLeft:'10%' }}>
+                    <TextInput style={{ width: 200 }}
                         placeholder="Title"
                         placeholderTextColor="black"
                         multiline={true}
                         keyboardType="email-address"
-                        onChangeText={(title) => this.setState({ title })}
                         value={this.state.title}
+                        onChangeText={(title) => this.setState({ title })}
                     />
-                    <TextInput style={{ width: 400, height: 100 }}
+                    <TextInput style={{ width: 350, height: 300 }}
                         placeholder="Desc"
                         placeholderTextColor="black"
                         multiline={true}
@@ -72,15 +87,15 @@ class Edit extends Component {
                         keyboardType="email-address"
                         onChangeText={(desc) => this.setState({ desc })}
                         value={this.state.desc}
-
                     />
+                    <Text>Category</Text>
                     <Picker
                         selectedValue={this.state.idCat}
-                        style={{ height: 50, width: 100, marginLeft: '10%' }}
+                        style={{ height: 50, width: 100 }}
                         onValueChange={(itemValue, itemIndex) =>
-                            this.setState({ language: itemValue })
+                            this.setState({ idCat: itemValue })
                         }
-                        >
+                    >
                         {this.state.cat.map((item) => {
                             return (
                                 <Picker.Item label={item.category} value={item.idCat} />

@@ -4,13 +4,12 @@ import { connect } from 'react-redux';
 import moment from 'moment';
 import { withNavigation } from 'react-navigation';
 import { getNote } from '../Publics/Redux/action/note'
-import Data from './dummy';
 console.logYellowBox = true;
 class Card extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data: Data,
+            data: [],
             refresh: false,
             page: 0,
             isLoading: false,
@@ -29,7 +28,7 @@ class Card extends Component {
     FlatListItem = (item, index) => (
         <TouchableOpacity onPress={() => this.props.navigation.navigate('edit', {
             id: item.item.idNote,
-            idCat: item.item.idCat, 
+            idCat: item.item.idCat,
             desc: item.item.desc,
             title: item.item.title
         })}
@@ -41,10 +40,16 @@ class Card extends Component {
                 margin: 14,
                 flex: 1,
                 borderRadius: 5,
-                backgroundColor: item.item.idCat == 1 ? '#FF92A9' :
+                backgroundColor: item.item.idCat == 1 ? '#BC4356' :
                     item.item.idCat == 2 ? '#DCDB6A' :
                         item.item.idCat == 3 ? '#FAD06C' :
-                            item.item.idCat == 4 ? '#22EFA9' : '#2F4356'
+                            item.item.idCat == 4 ? '#22EFA9' :
+                                item.item.idCat == 5 ? '#E3EFA9' :
+                                    item.item.idCat == 6 ? '#A4DEFA' :
+                                        item.item.idCat == 7 ? '#B321FA' :
+                                            item.item.idCat == 8 ? '#CD21DA' :
+                                                item.item.idCat == 9 ? '#BB33FA' :
+                                                    item.item.idCat == 10 ? '#6D21F2' : '#9A4A56'
 
             }}>
             {/* {console.log(item)} */}
@@ -79,6 +84,8 @@ class Card extends Component {
                     numColumns={2}
                     // keyExtractor={this._keyExtractor}
                     renderItem={this.FlatListItem}
+                    refreshing={this.state.refreshing}
+                    onRefresh={this._handleRefresh}
                 // onEndReachedThreshold={0.1}
                 // onEndReached={() => this.handlePage()}
                 // refreshControl={
