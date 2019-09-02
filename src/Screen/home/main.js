@@ -6,6 +6,8 @@ import {
     TouchableOpacity,
     Image
 } from 'react-native';
+
+import { Button, Icon, Fab } from 'native-base';
 import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 import Card from '../../Components/card'
@@ -31,7 +33,7 @@ class Main extends Component {
                             source={require('../../img/beb.jpg')}
                         />
                     </TouchableOpacity>
-                    <Text style={{ marginHorizontal: '40%', fontSize: 16,fontWeight:"bold" }}>NOTE APP</Text>
+                    <Text style={{ marginHorizontal: '40%', fontSize: 16, fontWeight: "bold" }}>NOTE APP</Text>
                     <TouchableOpacity style={style.scornavbar}
                         onPress={() => this.props.navigation.navigate('board', {
                             idUser: this.state.id,
@@ -43,10 +45,20 @@ class Main extends Component {
                         />
                     </TouchableOpacity>
                 </View>
-                <View style={{marginTop:'20%'}}>
-                    <Card/>
+                <View style={{ marginTop: '20%' }}>
+                    <Card />
 
                 </View>
+                <Fab
+                    active={this.state.active}
+                    position="bottomRight"
+                    style={{ backgroundColor: 'white' }}
+                    onPress={()=>{this.props.navigation.navigate('add')}}>
+                     <Image
+                            style={{ width: 32, height: 32 }}
+                            source={require('../../img/add.jpg')}
+                        />
+                </Fab>
             </View>
         )
     }
@@ -54,9 +66,9 @@ class Main extends Component {
 const mapStateToProps = (state) => {
     return {
         note: state.note.noteList
-        };
+    };
 };
-export default connect(mapStateToProps) (withNavigation(Main));
+export default connect(mapStateToProps)(withNavigation(Main));
 const style = StyleSheet.create({
     body: {
         flex: 1,
