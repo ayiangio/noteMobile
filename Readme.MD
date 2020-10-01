@@ -1,6 +1,6 @@
 <h1 align="center">Note App</h1>
 <p align="center">
-  <img width="250" src="https://www.fullstacklabs.co/img/technologyLogos/tech_reactnative.png"/>
+  <img width="250" src="https://www.pngitem.com/pimgs/m/15-156285_mb7-react-native-mobile-app-development-hd-png.png"/>
 </p>
 <p align="center">
   Built with React Native.
